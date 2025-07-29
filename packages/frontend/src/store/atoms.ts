@@ -18,12 +18,12 @@ export const operationsAtom = atom<Record<string, 'starting' | 'stopping' | null
 
 // 认证状态
 export const isAuthenticatedAtom = atom<boolean>(
-  () => localStorage.getItem('docoman_authenticated') === 'true'
+  localStorage.getItem('docoman_authenticated') === 'true'
 );
 
 export const setAuthenticatedAtom = atom(
   null,
-  (get, set, authenticated: boolean) => {
+  (_get, set, authenticated: boolean) => {
     set(isAuthenticatedAtom, authenticated);
     localStorage.setItem('docoman_authenticated', authenticated.toString());
   }

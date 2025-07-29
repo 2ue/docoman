@@ -1,9 +1,9 @@
 import React from 'react';
 import { useAtom } from 'jotai';
-import { Menu, Home, FileText, Settings, Sparkles } from 'lucide-react';
+import { Menu, Home, FileText, Settings, Sparkles, LogOut } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { sidebarOpenAtom } from '@/store/atoms';
+import { sidebarOpenAtom, setAuthenticatedAtom } from '@/store/atoms';
 import { cn } from '@/lib/utils';
 
 interface LayoutProps {
@@ -12,7 +12,12 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useAtom(sidebarOpenAtom);
+  const [, setAuthenticated] = useAtom(setAuthenticatedAtom);
   const location = useLocation();
+
+  const handleLogout = () => {
+    setAuthenticated(false);
+  };
 
   const navigationItems = [
     { icon: Home, label: 'Files', href: '/' },
@@ -83,6 +88,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               Docker Compose Manager
             </h2>
           </div>
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleLogout}
+            title="退出登录"
+          >
+            <LogOut className="w-4 h-4" />
+          </Button>
         </header>
 
         {/* Content */}

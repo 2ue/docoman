@@ -14,16 +14,16 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [, setAuthenticated] = useAtom(setAuthenticatedAtom);
-  const { toast } = useToast();
+  const { addToast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!username || !password) {
-      toast({
+      addToast({
+        type: 'error',
         title: '错误',
-        description: '请输入用户名和密码',
-        variant: 'destructive',
+        message: '请输入用户名和密码',
       });
       return;
     }
@@ -38,16 +38,17 @@ export default function LoginPage() {
       
       if (result.success) {
         setAuthenticated(true);
-        toast({
+        addToast({
+          type: 'success',
           title: '登录成功',
-          description: '欢迎使用 Docoman',
+          message: '欢迎使用 Docoman',
         });
       }
     } catch (error: any) {
-      toast({
+      addToast({
+        type: 'error',
         title: '登录失败',
-        description: error.message || '用户名或密码错误',
-        variant: 'destructive',
+        message: error.message || '用户名或密码错误',
       });
     } finally {
       setIsLoading(false);
