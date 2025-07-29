@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./packages/backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - COMPOSE_DIRECTORY=/app/compose-files
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker-compose-files:/app/compose-files
+    networks:
+      - docoman-network
+
+  frontend:
+    build:
+      context: ./packages/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - docoman-network
+
+networks:
+  docoman-network:
+    driver: bridge
+
+volumes:
+  compose-files:
